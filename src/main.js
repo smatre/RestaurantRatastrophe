@@ -1,42 +1,46 @@
-import EndScene from '../scenes/EndScene.js';
-import TitleScene from '../scenes/TitleScene.js'
-// 'use strict';
-
-var titleScene  = new TitleScene();
-var endScene = new EndScene();
-
-// global variables
+//global 
 let cursors;
-let currentScene = 0;
 const SCALE = 0.5;
-const tileSize = 35;
+const tileSize = 30;
 
-// main game object
+
+//main game object
 let config = {
-    type: Phaser.WEBGL,
+    type: Phaser.AUTO,
     width: 840,
     height: 525,
-    backgroundColor: 0xd2efe5,
+    scale: {
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            //debug: true,
             gravity: {
                 x: 0,
                 y: 0
             }
         }
     },
-    // scene: [titleScene]
-};
-
+    scene: [TitleScene, Play, EndScene]
+  }
+  //define game
 let game = new Phaser.Game(config);
-window.game = game;
 
-//load scene
-game.scene.add('titleScene', titleScene);
-game.scene.add('endScene', endScene);
-
-//start title scene
-game.scene.start('titleScene');
-//game.scene.start('endScene');
+//reserve keyboard vars
+let keyF, keyR, keyLEFT, keyRIGHT;
+// set UI sizes
+let borderUISize = game.config.height / 15;
+let borderPadding = borderUISize / 3;
+let w = game.config.width;
+let h = game.config.height;
+let centerX = game.config.width/2;
+let centerY = game.config.height/2;
+const textSpacer = 64;
+let paddle = null;
+const paddleWidth = 16;
+const paddleHeight = 128;
+const paddleVelocity = 150;
+let level;
+let highScore;
+let newHighScore = false;
