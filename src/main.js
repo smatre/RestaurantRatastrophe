@@ -44,3 +44,4 @@ const paddleVelocity = 150;
 let level;
 let highScore;
 let newHighScore = false;
+

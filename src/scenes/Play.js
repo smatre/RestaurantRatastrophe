@@ -17,7 +17,7 @@ class Play extends Phaser.Scene {
         this.barrierSpeed = -200;
         this.barrierSpeedMax = -500;
         // variables and settings
-        this.JUMP_VELOCITY = -700;
+        this.JUMP_VELOCITY = -900;
         this.MAX_JUMPS = 2;
         this.SCROLL_SPEED = 4;
         this.physics.world.gravity.y = 2600;
@@ -76,7 +76,7 @@ class Play extends Phaser.Scene {
 
     // create new barriers and add them to existing barrier group
     addBarrier() {
-        let speedVariance =  Phaser.Math.Between(0, 25);
+        let speedVariance =  Phaser.Math.Between(5, 25);
         let barrier = new Barrier(this, this.barrierSpeed - speedVariance);
         this.barrierGroup.add(barrier);
     }
@@ -125,7 +125,7 @@ class Play extends Phaser.Scene {
         this.rat.destroyed = true;                    // turn off collision checking
         this.difficultyTimer.destroy();  
         this.rat.destroy();    
-
+        this.scene.start('endScene');
         // switch states after timer expires
        // this.time.delayedCall(4000, () => { this.scene.start('EndScene'); });
     }
