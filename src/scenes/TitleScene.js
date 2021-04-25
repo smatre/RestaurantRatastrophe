@@ -5,6 +5,8 @@ class TitleScene extends Phaser.Scene {
 
     preload() {
         this.load.image('titleScreen', 'assets/Title.png');
+        this.load.image('playButton', 'assets/playButton.png');
+
     }
 
     create() {
@@ -15,22 +17,14 @@ class TitleScene extends Phaser.Scene {
         img.setOrigin(1.25, 1.4);
 
         //button play
-        this.buttonStart = this.add.text(game.config.width/2 - 5,
-            game.config.height/2 - 3, 'START',
-        {fill: '#FFFFFF'});
-        this.buttonStart.setInteractive();
-        this.buttonStart.on('pointerdown', () => { 
+        var playButton = this.add.image(game.config.width,
+            game.config.height, 'playButton');
+        playButton.scale = 0.5
+        playButton.setOrigin(1.9, 5);
+        playButton.setInteractive();
+        playButton.on('pointerdown', () => { 
             this.clickButton();
         });
-
-        //button quit
-        // this.buttonQuit = this.add.text(game.config.width/2 - 5,
-        //     game.config.height/1.4 - 10, 'QUIT',
-        // {fill: '#FFFFFF'});
-        // this.buttonQuit.setInteractive();
-        // this.buttonQuit.on('pointerdown', () => { 
-        //     this.clickButton();
-        // });
     }
 
     clickButton() {
