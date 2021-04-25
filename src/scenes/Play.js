@@ -9,8 +9,11 @@ class Play extends Phaser.Scene {
         // load ssets
         this.load.image('kitchen','kitchen.png');
         this.load.image('counter','counter.png');
-        this.load.image('rat','rat.png');
+        //this.load.image('rat','rat.png');
         this.load.image('trap','mouseTrap.png');
+        this.load.spritesheet('rat', 'ratSprites.png', {
+            frameWidth: 160, frameHeight: 120, startFrame: 0, endFrame: 6
+        });
     }
 
     create() {
@@ -72,6 +75,13 @@ class Play extends Phaser.Scene {
 
         // add physics collider
         this.physics.add.collider(this.rat, this.ground);
+
+        //add rat run animation
+        this.anims.create({
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('rat', { start: 0, end: 6, first: 0}),
+            frameRate: 12
+        });
     }
 
     // create new barriers and add them to existing barrier group
@@ -93,15 +103,18 @@ class Play extends Phaser.Scene {
            // this.rat.anims.play('walk', true);
 	    	this.jumps = this.MAX_JUMPS;
 	    	this.jumping = false;
+            this.run = true;
 	    } 
         // else {
 	    // 	this.rat.anims.play('jump');
 	    // }
+        this.rat.anims.play('run', this.run);
         // allow steady velocity change up to a certain key down duration
         // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.DownDuration__anchor
 	    if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(cursors.up, 150)) {
 	        this.rat.body.velocity.y = this.JUMP_VELOCITY;
 	        this.jumping = true;
+            this.run = false;
 	    } 
         // finally, letting go of the UP key subtracts a jump
         // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.UpDuration__anchor

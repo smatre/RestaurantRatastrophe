@@ -4,7 +4,7 @@ class TitleScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('titleScreen', 'assets/Title.png');
+        this.load.image('titleScreen', 'assets/titleScreen.png');
         this.load.image('playButton', 'assets/playButton.png');
 
     }
@@ -13,8 +13,8 @@ class TitleScene extends Phaser.Scene {
         //title
         var img = this.add.image(game.config.width, 
             game.config.height, 'titleScreen');
-        img.scale = 0.5
-        img.setOrigin(1.25, 1.4);
+        img.scale = 1
+        img.setOrigin(1,1);
 
         //button play
         var playButton = this.add.image(game.config.width,
