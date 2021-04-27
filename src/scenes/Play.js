@@ -47,14 +47,13 @@ class Play extends Phaser.Scene {
         this.rat = this.physics.add.sprite(120, game.config.height/2-tileSize, 'rat').setOrigin(SCALE);
         this.rat.setCollideWorldBounds(true);
         this.rat.setBounce(0.5);
-        this.rat.setImmovable();
+        //this.rat.setImmovable();
         this.rat.setMaxVelocity(0, 600);
         this.rat.setDragY(200);
         this.rat.setDepth(1);             // ensures that this.rat z-depth remains above shadow this.rats
         this.rat.destroyed = false;       // custom property to track this.rat life
        // this.rat.setBlendMode('SCREEN');  // set a WebGL blend mode
-       // add physics collider
-       this.physics.add.collider(this.rat, this.ground); //not working :(
+      
 
        // set up trap group
         this.trapGroup = this.add.group({
@@ -84,6 +83,10 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('rat', { start: 0, end: 6, first: 0}),
             frameRate: 12
         });
+
+       // add physics collider
+       this.physics.add.collider(this.rat, this.ground);
+       this.physics.add.collider(this.trapGroup, this.ground);
     }
 
     // create new traps and add them to existing trap group
