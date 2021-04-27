@@ -1,6 +1,6 @@
 //global 
 let cursors;
-const SCALE = 0.5;
+const SCALE = .5;
 const tileSize = 30;
 
 
@@ -15,7 +15,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            //debug: true,
+            debug: true,
             gravity: {
                 x: 0,
                 y: 0

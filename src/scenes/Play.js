@@ -6,22 +6,23 @@ class Play extends Phaser.Scene {
     preload() {
         // set load path
         this.load.path = 'assets/';
-        // load ssets
+        // load assets
         this.load.image('kitchen','kitchen.png');
-        this.load.image('counter','counter.png');
-        //this.load.image('rat','rat.png');
-        this.load.image('trap','mouseTrap.png');
+        //this.load.image('counter','counter.png');
+        this.load.image('trap','newMouseTrap.png');
+        this.load.image('block','marbleFloorTile.png');
         this.load.spritesheet('rat', 'ratSpritesSmall.png', {
             frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
         });
     }
 
     create() {
-        this.barrierSpeed = -200;
-        this.barrierSpeedMax = -500;
+        this.trapSpeed = -200;
+        this.trapSpeedMax = -500;
         // variables and settings
         this.JUMP_VELOCITY = -900;
-        this.MAX_JUMPS = 2;
+        //change MAX_JUMPS  to two once we implement magic cheese
+        this.MAX_JUMPS = 1;
         this.SCROLL_SPEED = 4;
         this.physics.world.gravity.y = 2600;
 
@@ -32,16 +33,16 @@ class Play extends Phaser.Scene {
         // make ground tiles group
         this.ground = this.add.group();
         for(let i = 0; i < game.config.width; i += tileSize) {
-            let groundTile = this.physics.add.sprite(i, game.config.height - tileSize, 'platformer_atlas', 'block').setScale(SCALE).setOrigin(0);
+            let groundTile = this.physics.add.sprite(i, game.config.height - tileSize, 'block').setScale(SCALE).setOrigin(0);
             groundTile.body.immovable = true;
             groundTile.body.allowGravity = false;
             this.ground.add(groundTile);
         }
         // put another tile sprite above the ground tiles
-       this.groundScroll = this.add.tileSprite(0, game.config.height-tileSize, game.config.width, tileSize, 'counter').setOrigin(0);
+      //this.groundScroll = this.add.tileSprite(0, game.config.height-tileSize, game.config.width, tileSize, 'counter').setOrigin(0);
 
 
-        // set up my rat son 👽
+        // set up rat
        // this.alien = this.physics.add.sprite(120, game.config.height/2-tileSize, 'platformer_atlas', 'side').setScale(SCALE);
         this.rat = this.physics.add.sprite(120, game.config.height/2-tileSize, 'rat').setOrigin(SCALE);
         this.rat.setCollideWorldBounds(true);
@@ -52,13 +53,16 @@ class Play extends Phaser.Scene {
         this.rat.setDepth(1);             // ensures that this.rat z-depth remains above shadow this.rats
         this.rat.destroyed = false;       // custom property to track this.rat life
        // this.rat.setBlendMode('SCREEN');  // set a WebGL blend mode
-        // set up barrier group
-        this.barrierGroup = this.add.group({
+       // add physics collider
+       this.physics.add.collider(this.rat, this.ground); //not working :(
+
+       // set up trap group
+        this.trapGroup = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
         });
-        // wait a few seconds before spawning barriers
+        // wait a few seconds before spawning traps
         this.time.delayedCall(2500, () => { 
-            this.addBarrier(); 
+            this.addTrap(); 
         });
 
         // set up difficulty timer (triggers callback every second)
@@ -72,9 +76,7 @@ class Play extends Phaser.Scene {
 
         // set up Phaser-provided cursor key input
         cursors = this.input.keyboard.createCursorKeys();
-
-        // add physics collider
-        this.physics.add.collider(this.rat, this.ground);
+        
 
         //add rat run animation
         this.anims.create({
@@ -84,11 +86,11 @@ class Play extends Phaser.Scene {
         });
     }
 
-    // create new barriers and add them to existing barrier group
-    addBarrier() {
+    // create new traps and add them to existing trap group
+    addTrap() {
         let speedVariance =  Phaser.Math.Between(5, 25);
-        let barrier = new Barrier(this, this.barrierSpeed - speedVariance);
-        this.barrierGroup.add(barrier);
+        let trap = new Trap(this, this.trapSpeed - speedVariance);
+        this.trapGroup.add(trap);
     }
 
     update() {
@@ -130,7 +132,7 @@ class Play extends Phaser.Scene {
             //     this.rat.body.velocity.y += this.ratVelocity;
             // }
             // check for collisions
-            this.physics.world.collide(this.rat, this.barrierGroup, this.ratCollision, null, this);
+            this.physics.world.collide(this.rat, this.trapGroup, this.ratCollision, null, this);
         }
     }
 
