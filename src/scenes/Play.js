@@ -34,10 +34,12 @@ class Play extends Phaser.Scene {
         this.ground = this.add.group();
         for(let i = 0; i < game.config.width; i += tileSize) {
             let groundTile = this.physics.add.sprite(i, game.config.height - tileSize, 'block').setScale(SCALE).setOrigin(0);
-            groundTile.body.immovable = true;
             groundTile.body.allowGravity = false;
+            groundTile.body.setImmovable();
             this.ground.add(groundTile);
+            
         }
+
         // put another tile sprite above the ground tiles
       //this.groundScroll = this.add.tileSprite(0, game.config.height-tileSize, game.config.width, tileSize, 'counter').setOrigin(0);
 
@@ -50,11 +52,13 @@ class Play extends Phaser.Scene {
         //this.rat.setImmovable();
         this.rat.setMaxVelocity(0, 600);
         this.rat.setDragY(200);
-        this.rat.setDepth(1);             // ensures that this.rat z-depth remains above shadow this.rats
+        this.rat.setDepth(1);
+        // this.rat.scale(0.5);             // ensures that this.rat z-depth remains above shadow this.rats
         this.rat.destroyed = false;       // custom property to track this.rat life
        // this.rat.setBlendMode('SCREEN');  // set a WebGL blend mode
-      
-
+       // add physics collider
+       //this.physics.add.collider(this.rat, this.ground); //not working :(
+            // Checking the collision between player and bombs
        // set up trap group
         this.trapGroup = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
@@ -84,9 +88,9 @@ class Play extends Phaser.Scene {
             frameRate: 12
         });
 
-       // add physics collider
-       this.physics.add.collider(this.rat, this.ground);
-       this.physics.add.collider(this.trapGroup, this.ground);
+        this.physics.add.collider(this.rat, this.ground);
+        this.physics.add.collider(this.trapGroup, this.ground);
+
     }
 
     // create new traps and add them to existing trap group
@@ -103,6 +107,7 @@ class Play extends Phaser.Scene {
 
 		// check if rat is grounded
 	    this.rat.isGrounded = this.rat.body.touching.down;
+
 	    // if so, we have jumps to spare
 	    if(this.rat.isGrounded) {
            // this.rat.anims.play('walk', true);
@@ -135,7 +140,8 @@ class Play extends Phaser.Scene {
             //     this.rat.body.velocity.y += this.ratVelocity;
             // }
             // check for collisions
-            this.physics.world.collide(this.rat, this.trapGroup, this.ratCollision, null, this);
+            this.physics.world.collide(this.rat, this.trapGroup, 
+                this.ratCollision, null, this);
         }
     }
 
