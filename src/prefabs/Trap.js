@@ -8,7 +8,7 @@ class Trap extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(velocity);            // make it go!
         //this.setImmovable(); 
         this.setCollideWorldBounds(true);                   
-        //this.tint = Math.random() * 0xFFFFFF;   // randomize tint
+        
         this.newTrap = true;                 // custom property to control Trap spawning
     }
 

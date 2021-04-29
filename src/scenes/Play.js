@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
         //this.load.image('counter','counter.png');
         this.load.image('trap','newMouseTrap.png');
         this.load.image('block','marbleFloorTile.png');
+        this.load.image('shelf','metalShelf.png');
         this.load.spritesheet('rat', 'ratSpritesSmall.png', {
             frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
         });
@@ -20,7 +21,7 @@ class Play extends Phaser.Scene {
         this.trapSpeed = -200;
         this.trapSpeedMax = -500;
         // variables and settings
-        this.JUMP_VELOCITY = -900;
+        this.JUMP_VELOCITY = -1000;
         //change MAX_JUMPS  to two once we implement magic cheese
         this.MAX_JUMPS = 1;
         this.SCROLL_SPEED = 4;
@@ -68,6 +69,14 @@ class Play extends Phaser.Scene {
             this.addTrap(); 
         });
 
+        //set up shelf group
+        this.shelfGroup = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        this.time.delayedCall(2500, () => { 
+            this.addShelf(); 
+        });
+
         // set up difficulty timer (triggers callback every second)
         this.difficultyTimer = this.time.addEvent({
             delay: 1000,
@@ -90,6 +99,7 @@ class Play extends Phaser.Scene {
 
         this.physics.add.collider(this.rat, this.ground);
         this.physics.add.collider(this.trapGroup, this.ground);
+        this.physics.add.collider(this.rat, this.shelfGroup);
 
     }
 
@@ -98,6 +108,13 @@ class Play extends Phaser.Scene {
         let speedVariance =  Phaser.Math.Between(5, 25);
         let trap = new Trap(this, this.trapSpeed - speedVariance);
         this.trapGroup.add(trap);
+    }
+
+    // create new shelves and add them to existing group
+    addShelf() {
+        let speedVariance =  Phaser.Math.Between(5, 15);
+        let shelf = new Shelf(this, this.trapSpeed - speedVariance);
+        this.shelfGroup.add(shelf);
     }
 
     update() {
