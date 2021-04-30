@@ -6,10 +6,15 @@ class EndScene extends Phaser.Scene {
         this.load.image('endScene', 'assets/endScene.png');
         this.load.image('restartButton', 'assets/restartButton.png');
         this.load.image('quitButton', 'assets/quitButton2.png');
+        this.load.image('endScreen', 'assets/endScreen.png')
     }
 
     create() {
-
+        //endScreen
+        var end = this.add.image(game.config.width, 
+            game.config.height, 'endScreen');
+        end.scale = 1
+        end.setOrigin(1,1);
         //title
         var img = this.add.image(game.config.width,
             game.config.height, 'endScene');
@@ -20,7 +25,7 @@ class EndScene extends Phaser.Scene {
         var restartButton = this.add.image(game.config.width,
             game.config.height, 'restartButton');
         restartButton.scale = 0.18
-        restartButton.setOrigin(2.1, 5);
+        restartButton.setOrigin(3.1, 1.5);
         restartButton.setInteractive();
         restartButton.on('pointerdown', function (pointer) {
             this.playAgain = true;
@@ -30,7 +35,7 @@ class EndScene extends Phaser.Scene {
         var quitButton = this.add.image(game.config.width,
             game.config.height, 'quitButton');
         quitButton.scale = 0.18
-        quitButton.setOrigin(2.1, 3.5);
+        quitButton.setOrigin(1.1, 1.5);
         quitButton.on('pointerdown', function (pointer) {
             this.playAgain = false;
         }, this);
@@ -61,9 +66,9 @@ class EndScene extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 - 100,
                 'New Hi-Score', { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
         }
-        this.add.text(game.config.width / 2, game.config.height / 2 - 85,
+        this.add.text(game.config.width / 2, game.config.height / 2 - 65,
             `Hi-Score: ${highScore}`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
-        this.add.text(game.config.width / 2, game.config.height / 2 - 50,
+        this.add.text(game.config.width / 2, game.config.height / 2 - 30,
             `Score: ${score}`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
 
     }

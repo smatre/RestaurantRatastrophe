@@ -10,7 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('kitchen','kitchen.png');
         this.load.image('trap','newMouseTrap.png');
         this.load.image('block','marbleFloorTile.png');
-        this.load.image('shelf','metalShelf.png');
+        this.load.image('shelf','marbleShelf.png');
         this.load.spritesheet('rat', 'ratSpritesSmall.png', {
             frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
         });
