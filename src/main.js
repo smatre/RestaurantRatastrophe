@@ -41,7 +41,7 @@ let paddle = null;
 const paddleWidth = 16;
 const paddleHeight = 128;
 const paddleVelocity = 150;
-let level;
+let score;
 let highScore;
 let newHighScore = false;
 

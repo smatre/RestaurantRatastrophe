@@ -8,7 +8,6 @@ class Play extends Phaser.Scene {
         this.load.path = 'assets/';
         // load assets
         this.load.image('kitchen','kitchen.png');
-        //this.load.image('counter','counter.png');
         this.load.image('trap','newMouseTrap.png');
         this.load.image('block','marbleFloorTile.png');
         this.load.image('shelf','metalShelf.png');
@@ -29,7 +28,8 @@ class Play extends Phaser.Scene {
 
         // add tile sprite
         this.talltrees = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'kitchen').setOrigin(0);
-
+        score = 0;
+        this.scoreText = this.add.text(100, 16, 'score: 0', { fontSize: '32px', fill: '#000' });;
 
         // make ground tiles group
         this.ground = this.add.group();
@@ -41,25 +41,15 @@ class Play extends Phaser.Scene {
             
         }
 
-        // put another tile sprite above the ground tiles
-      //this.groundScroll = this.add.tileSprite(0, game.config.height-tileSize, game.config.width, tileSize, 'counter').setOrigin(0);
-
-
         // set up rat
-       // this.alien = this.physics.add.sprite(120, game.config.height/2-tileSize, 'platformer_atlas', 'side').setScale(SCALE);
         this.rat = this.physics.add.sprite(120, game.config.height/2-tileSize, 'rat').setOrigin(SCALE);
         this.rat.setCollideWorldBounds(true);
         this.rat.setBounce(0.5);
-        //this.rat.setImmovable();
         this.rat.setMaxVelocity(0, 600);
         this.rat.setDragY(200);
         this.rat.setDepth(1);
-        // this.rat.scale(0.5);             // ensures that this.rat z-depth remains above shadow this.rats
         this.rat.destroyed = false;       // custom property to track this.rat life
-       // this.rat.setBlendMode('SCREEN');  // set a WebGL blend mode
-       // add physics collider
-       //this.physics.add.collider(this.rat, this.ground); //not working :(
-            // Checking the collision between player and bombs
+
        // set up trap group
         this.trapGroup = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
@@ -120,7 +110,6 @@ class Play extends Phaser.Scene {
     update() {
         // update tile sprites (tweak for more "speed")
         this.talltrees.tilePositionX += this.SCROLL_SPEED;
-       // this.groundScroll.tilePositionX += this.SCROLL_SPEED;
 
 		// check if rat is grounded
 	    this.rat.isGrounded = this.rat.body.touching.down;
@@ -132,9 +121,7 @@ class Play extends Phaser.Scene {
 	    	this.jumping = false;
             this.run = true;
 	    } 
-        // else {
-	    // 	this.rat.anims.play('jump');
-	    // }
+
         this.rat.anims.play('run', this.run);
         // allow steady velocity change up to a certain key down duration
         // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.DownDuration__anchor
@@ -150,25 +137,28 @@ class Play extends Phaser.Scene {
 	    	this.jumping = false;
 	    }
         if(!this.rat.destroyed) {
-            // check for player input
-            // if(cursors.up.isDown) {
-            //     this.rat.body.velocity.y -= this.ratVelocity;
-            // } else if(cursors.down.isDown) {
-            //     this.rat.body.velocity.y += this.ratVelocity;
-            // }
             // check for collisions
             this.physics.world.collide(this.rat, this.trapGroup, 
                 this.ratCollision, null, this);
+                
         }
+
+        //check trap destruction
+        this.trapGroup.getChildren().forEach(trap => {
+            if (trap.body.x < 25) {
+                trap.destroy();
+                score += 5;
+                this.scoreText.text = "score: " + score;
+            }
+        });
     }
 
     ratCollision(){
         this.rat.destroyed = true;                    // turn off collision checking
         this.difficultyTimer.destroy();  
-        this.rat.destroy();    
+        this.rat.destroy();  
+        //change scene to end game  
         this.scene.start('endScene');
-        // switch states after timer expires
-       // this.time.delayedCall(4000, () => { this.scene.start('EndScene'); });
     }
 
 

@@ -9,8 +9,9 @@ class EndScene extends Phaser.Scene {
     }
 
     create() {
+
         //title
-        var img = this.add.image(game.config.width, 
+        var img = this.add.image(game.config.width,
             game.config.height, 'endScene');
         img.scale = 0.18
         img.setOrigin(1.5, 1.3);
@@ -21,36 +22,57 @@ class EndScene extends Phaser.Scene {
         restartButton.scale = 0.18
         restartButton.setOrigin(2.1, 5);
         restartButton.setInteractive();
-        restartButton.on('pointerdown', function(pointer){ 
-            this.playAgain=true;
-        },this);
+        restartButton.on('pointerdown', function (pointer) {
+            this.playAgain = true;
+        }, this);
 
         //button quit
         var quitButton = this.add.image(game.config.width,
             game.config.height, 'quitButton');
         quitButton.scale = 0.18
         quitButton.setOrigin(2.1, 3.5);
-        quitButton.on('pointerdown', function(pointer){ 
-            this.playAgain=false;
-        },this);
+        quitButton.on('pointerdown', function (pointer) {
+            this.playAgain = false;
+        }, this);
 
-        //button
-        //  this.buttonPlay = this.add.text(game.config.width/2,
-        //      game.config.height/2, 'PLAY',
-        //  {fill: '#00FF00'});
-        // // this.buttonPlay.setInteractive();
-        // // this.buttonPlay.on('pointerdown', () => { 
-        // //     console.log('pointerdown'); 
-        // // });
+        //check for high score in local storage
+        if (localStorage.getItem('hiscore') != null) {
+            console.log("no high score in storage");
+
+            let storedScore = parseInt(localStorage.getItem('hiscore'));
+            //see if current score higher than stored score
+            if (score > storedScore) {
+                localStorage.setItem('hiscore', score.toString());
+                highScore = score;
+                newHighScore = true;
+            } else {
+                highScore = parseInt(localStorage.getItem('hiscore'));
+                newHighScore = false;
+            }
+        } else {
+            highScore = score;
+            localStorage.setItem('hiscore', highScore.toString());
+            newHighScore = true;
+
+        }
+        console.log("adding text");
+
+        if (newHighScore) {
+            this.add.text(game.config.width / 2, game.config.height / 2 - 100,
+                'New Hi-Score', { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
+        }
+        this.add.text(game.config.width / 2, game.config.height / 2 - 85,
+            `Hi-Score: ${highScore}`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
+        this.add.text(game.config.width / 2, game.config.height / 2 - 50,
+            `Score: ${score}`, { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
+
     }
 
 
     update() {
-        if (this.playAgain){
-            this.playAgain=false;
+        if (this.playAgain) {
+            this.playAgain = false;
             this.scene.start('playScene');
-        } 
+        }
     }
 }
-
-//export default EndScene;
