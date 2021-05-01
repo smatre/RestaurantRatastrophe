@@ -10,6 +10,11 @@ class Play extends Phaser.Scene {
         this.load.image('kitchen','kitchen.png');
         this.load.image('trap','newMouseTrap.png');
         this.load.image('block','marbleFloorTile.png');
+        this.load.image('grape','grapes.png');
+        this.load.image('steak','steak.png');
+        this.load.image('bread','bread.png');
+        this.load.image('cheese','golden cheese.png');
+        this.load.image('apple','badApple.png');
         this.load.image('shelf','marbleShelf.png');
         this.load.spritesheet('rat', 'ratSpritesSmall.png', {
             frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
@@ -63,10 +68,51 @@ class Play extends Phaser.Scene {
         this.shelfGroup = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
         });
-        this.time.delayedCall(2500, () => { 
+        //wait before spawning
+        this.time.delayedCall(2800, () => { 
             this.addShelf(); 
         });
 
+        //set up grape 🍇 group
+        this.grapeGroup = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        //wait before spawn
+        this.time.delayedCall(2200, () => { 
+            this.addGrape(); 
+        });
+        //set up steak 🥩 group
+        this.steakGroup = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        //wait before spawn
+        this.time.delayedCall(2900, () => { 
+            this.addSteak(); 
+        });
+        //set up bread 🍞 group
+        this.breadGroup = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        //wait before spawn
+        this.time.delayedCall(2300, () => { 
+            this.addBread(); 
+        });
+        //set up cheese 🧀 group
+        this.cheeseGroup = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        //wait before spawning
+        this.time.delayedCall(2900, () => { 
+            this.addCheese(); 
+        });
+        //set up apple 🍎 group
+        this.appleGroup = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        //wait before spawning
+        this.time.delayedCall(2900, () => { 
+            this.addApple(); 
+        });
         // set up difficulty timer (triggers callback every second)
         this.difficultyTimer = this.time.addEvent({
             delay: 1000,
@@ -95,16 +141,44 @@ class Play extends Phaser.Scene {
 
     // create new traps and add them to existing trap group
     addTrap() {
-        let speedVariance =  Phaser.Math.Between(5, 25);
+        let speedVariance =  Phaser.Math.Between(5, 20);
         let trap = new Trap(this, this.trapSpeed - speedVariance);
         this.trapGroup.add(trap);
     }
 
     // create new shelves and add them to existing group
     addShelf() {
-        let speedVariance =  Phaser.Math.Between(5, 15);
+        let speedVariance =  4;
         let shelf = new Shelf(this, this.trapSpeed - speedVariance);
         this.shelfGroup.add(shelf);
+    }
+
+    //create grape group
+    addGrape() {
+        let speedVariance =  Phaser.Math.Between(5, 15);
+        let grape = new Grape(this, this.trapSpeed - speedVariance);
+        this.grapeGroup.add(grape);
+    }
+    //create steak group
+    addSteak() {
+        let speedVariance =  Phaser.Math.Between(5, 18);
+        let steak = new Steak(this, this.trapSpeed - speedVariance);
+        this.steakGroup.add(steak);
+    }
+    addBread() {
+        let speedVariance =  Phaser.Math.Between(5, 10);
+        let bread = new Bread(this, this.trapSpeed - speedVariance);
+        this.breadGroup.add(bread);
+    }
+    addCheese() {
+        let speedVariance =  Phaser.Math.Between(10, 20);
+        let cheese = new Cheese(this, this.trapSpeed - speedVariance);
+        this.cheeseGroup.add(cheese);
+    }
+    addApple() {
+        let speedVariance =  Phaser.Math.Between(10, 20);
+        let apple = new Apple(this, this.trapSpeed - speedVariance);
+        this.appleGroup.add(apple);
     }
 
     update() {
@@ -151,6 +225,21 @@ class Play extends Phaser.Scene {
                 this.scoreText.text = "score: " + score;
             }
         });
+        this.grapeGroup.getChildren().forEach(grape => {
+            this.foodCollision(grape, "grape");
+        });
+        this.steakGroup.getChildren().forEach(steak => {
+            this.foodCollision(steak, "steak");
+        });
+        this.breadGroup.getChildren().forEach(bread => {
+            this.foodCollision(bread, "bread");
+        });
+        this.cheeseGroup.getChildren().forEach(cheese => {
+            this.foodCollision(cheese, "cheese");
+        });
+        this.appleGroup.getChildren().forEach(apple => {
+            this.foodCollision(apple, "apple");
+        });
     }
 
     ratCollision(){
@@ -159,6 +248,36 @@ class Play extends Phaser.Scene {
         this.rat.destroy();  
         //change scene to end game  
         this.scene.start('endScene');
+    }
+
+    foodCollision(food,name){
+        if(this.physics.world.collide(this.rat,food)) {
+            if(name=="steak"){
+                score += 5;
+                console.log("steak");
+            }
+            else if (name=="grape"){
+                score += 3;
+                console.log("grape");
+            }
+            else if(name== "bread"){
+                score += 1;
+                console.log("break");
+            }
+            else if(name=="cheese"){
+                this.MAX_JUMPS=2
+            }
+            else if(name=="apple"){
+                score -= 10;
+                console.log("break");
+                if(score<0){
+                    score=0;
+                    this.ratCollision();
+                }
+            }
+            food.destroy();
+            this.scoreText.text = "score: " + score;
+        }
     }
 
 
