@@ -1,7 +1,7 @@
 class Shelf extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, velocity) {
         // call Phaser Physics Sprite constructor
-        super(scene, game.config.width - 75, Phaser.Math.Between(game.config.height - 50,475), 'shelf'); 
+        super(scene, game.config.width - 75, Phaser.Math.Between(game.config.height-120,game.config.height-150), 'shelf'); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add to physics system

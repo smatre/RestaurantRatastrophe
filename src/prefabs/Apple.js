@@ -1,7 +1,7 @@
 class Apple extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, velocity) {
         // call Phaser Physics Sprite constructor
-        super(scene, Phaser.Math.Between(game.config.width-256, game.config.width - 20), game.config.height - 40, 'apple'); 
+        super(scene, game.config.width - 20, game.config.height - 40, 'apple'); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add to physics system
