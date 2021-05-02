@@ -18,6 +18,7 @@ class Play extends Phaser.Scene {
         this.load.image('apple','badApple.png');
         this.load.image('shelf','marbleShelf.png');
         this.load.image('instruction', 'instructionScreen.png');
+        this.load.image('instruction2', 'instructionScreen2.png');
         this.load.spritesheet('rat', 'ratSpritesSmall.png', {
             frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
         });
@@ -39,6 +40,7 @@ class Play extends Phaser.Scene {
         // add tile sprite
         this.bgKitchen = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'kitchen').setOrigin(0);
         this.instruct = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'instruction').setOrigin(0);
+        this.instruct2 = this.add.tileSprite(game.config.width, 0, game.config.width, game.config.height, 'instruction2').setOrigin(0);
         score = 0;
         this.scoreText = this.add.text(100, 16, 'score: 0', { fontSize: '32px', fill: '#000' });;
 
@@ -206,8 +208,10 @@ class Play extends Phaser.Scene {
         this.bgKitchen.tilePositionX += this.SCROLL_SPEED;
         //add the scrolling instruction screen but destroy it after a while
         this.instruct.x -= this.SCROLL_SPEED;
-        if(this.instruct.x < -1000){
+        this.instruct2.x -= this.SCROLL_SPEED;
+        if(this.instruct.x < -2000){
             this.instruct.destroy();
+            this.instruct2.destroy();
         }
 		// check if rat is grounded
 	    this.rat.isGrounded = this.rat.body.touching.down;
