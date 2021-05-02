@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         // set load path
         this.load.path = 'assets/';
         // load assets
+        this.load.image('border','border.png');
         this.load.image('kitchen','kitchen.png');
         this.load.image('trap','newMouseTrap.png');
         this.load.image('block','marbleFloorTile.png');
@@ -142,10 +143,19 @@ class Play extends Phaser.Scene {
             key: 'spark',
             frames: this.anims.generateFrameNumbers('sparkle', { start: 0, end: 5, first: 0}),
             frameRate: 12
-        })
+        });
+        //add border
+        this.border=this.physics.add.sprite(75, game.config.height/2, 'border').setOrigin(SCALE);
+        this.border.setVisible(false);
+        this.border.setImmovable(true);
+        this.border.body.allowGravity=false;
+        this.border.body.checkCollision.left=true;
+        this.border.body.checkCollision.right=true;
+
         this.physics.add.collider(this.rat, this.ground);
         this.physics.add.collider(this.trapGroup, this.ground);
         this.physics.add.collider(this.rat, this.shelfGroup);
+        this.physics.add.collider(this.rat, this.border);
 
     }
     // create new traps and add them to existing trap group
