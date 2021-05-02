@@ -28,6 +28,8 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.delay = 10000;
+        this.firstTrap = true;
         this.trapSpeed = -200;
         this.trapSpeedMax = -500;
         // variables and settings
@@ -71,6 +73,7 @@ class Play extends Phaser.Scene {
         this.time.delayedCall(2000, () => { 
             this.addTrap(); 
         });
+        
 
         //set up shelf group
         this.shelfGroup = this.add.group({
@@ -163,8 +166,15 @@ class Play extends Phaser.Scene {
     // create new traps and add them to existing trap group
     addTrap() {
         let speedVariance =  Phaser.Math.Between(35, 38);
-        let trap = new Trap(this, this.trapSpeed - speedVariance);
-        this.trapGroup.add(trap);
+        
+        this.time.delayedCall(this.delay, () => { 
+            console.log("adding trap: time", this.time.now);
+            let trap = new Trap(this, this.trapSpeed - speedVariance);
+            this.trapGroup.add(trap);        
+        });
+        this.delay -= 1000;  
+        
+        
     }
     //create bread 🍞 group
     addBread() {

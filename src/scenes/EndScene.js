@@ -42,8 +42,6 @@ class EndScene extends Phaser.Scene {
 
         //check for high score in local storage
         if (localStorage.getItem('hiscore') != null) {
-            console.log("no high score in storage");
-
             let storedScore = parseInt(localStorage.getItem('hiscore'));
             //see if current score higher than stored score
             if (score > storedScore) {
@@ -60,7 +58,6 @@ class EndScene extends Phaser.Scene {
             newHighScore = true;
 
         }
-        console.log("adding text");
 
         if (newHighScore) {
             this.add.text(game.config.width / 2, game.config.height / 2 - 100,
