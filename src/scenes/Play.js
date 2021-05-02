@@ -16,8 +16,12 @@ class Play extends Phaser.Scene {
         this.load.image('cheese','golden cheese.png');
         this.load.image('apple','badApple.png');
         this.load.image('shelf','marbleShelf.png');
+        this.load.image('instruction', 'instructionScreen.png');
         this.load.spritesheet('rat', 'ratSpritesSmall.png', {
             frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
+        });
+        this.load.spritesheet('sparkle', 'sparkle.png', {
+            frameWidth: 100, frameHeight: 100, startFrame: 0, endFrame: 5
         });
     }
 
@@ -32,7 +36,8 @@ class Play extends Phaser.Scene {
         this.physics.world.gravity.y = 2600;
 
         // add tile sprite
-        this.talltrees = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'kitchen').setOrigin(0);
+        this.bgKitchen = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'kitchen').setOrigin(0);
+        this.instruct = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'instruction').setOrigin(0);
         score = 0;
         this.scoreText = this.add.text(100, 16, 'score: 0', { fontSize: '32px', fill: '#000' });;
 
@@ -133,6 +138,11 @@ class Play extends Phaser.Scene {
             frameRate: 12
         });
 
+        this.anims.create({
+            key: 'spark',
+            frames: this.anims.generateFrameNumbers('sparkle', { start: 0, end: 5, first: 0}),
+            frameRate: 12
+        })
         this.physics.add.collider(this.rat, this.ground);
         this.physics.add.collider(this.trapGroup, this.ground);
         this.physics.add.collider(this.rat, this.shelfGroup);
@@ -183,8 +193,12 @@ class Play extends Phaser.Scene {
 
     update() {
         // update tile sprites (tweak for more "speed")
-        this.talltrees.tilePositionX += this.SCROLL_SPEED;
-
+        this.bgKitchen.tilePositionX += this.SCROLL_SPEED;
+        //add the scrolling instruction screen but destroy it after a while
+        this.instruct.x -= this.SCROLL_SPEED;
+        if(this.instruct.x < -1000){
+            this.instruct.destroy();
+        }
 		// check if rat is grounded
 	    this.rat.isGrounded = this.rat.body.touching.down;
 
@@ -275,6 +289,11 @@ class Play extends Phaser.Scene {
                     this.ratCollision();
                 }
             }
+            let anim = this.add.sprite(food.x, food.y, 'sparkle').setOrigin(1, .7);
+            anim.anims.play('spark');
+            anim.on('animationcomplete', () => {
+                anim.destroy();
+            });
             food.destroy();
             this.scoreText.text = "score: " + score;
         }
