@@ -45,8 +45,9 @@ class Play extends Phaser.Scene {
         this.instruct = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'instruction').setOrigin(0);
         this.instruct2 = this.add.tileSprite(game.config.width, 0, game.config.width, game.config.height, 'instruction2').setOrigin(0);
         score = 0;
-        this.scoreText = this.add.text(100, 16, 'score: 0', { fontSize: '32px', fill: '#000' });;
-
+        this.scoreText = this.add.text(100, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        this.goText = this.add.text(centerX, centerY, 'GO!', { fontSize: '86px', fill: '#00b300' });
+        this.goText.alpha=0;
         // make ground tiles group
         this.ground = this.add.group();
         for(let i = 0; i < game.config.width; i += tileSize) {
@@ -76,7 +77,6 @@ class Play extends Phaser.Scene {
             this.addTrap(); 
         });
         
-
         //set up shelf group
         this.shelfGroup = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
@@ -115,7 +115,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawning
-        this.time.delayedCall(35000, () => { 
+        this.time.delayedCall(90000, () => { 
             this.addCheese(); 
         });
         //set up apple 🍎 group
@@ -165,7 +165,6 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.trapGroup, this.ground);
         this.physics.add.collider(this.rat, this.shelfGroup);
         this.physics.add.collider(this.rat, this.border);
-
     }
     // create new traps and add them to existing trap group
     addTrap() {
@@ -177,8 +176,6 @@ class Play extends Phaser.Scene {
             this.trapGroup.add(trap);        
         });
         this.delay -= 1000;  
-        
-        
     }
     //create bread 🍞 group
     addBread() {
@@ -206,7 +203,7 @@ class Play extends Phaser.Scene {
     }
     //create cheese 🧀 group
     addCheese() {
-        let speedVariance =  Phaser.Math.Between(10, 13);
+        let speedVariance =  Phaser.Math.Between(30, 40);
         let cheese = new Cheese(this, this.trapSpeed - speedVariance);
         this.cheeseGroup.add(cheese);
     }
@@ -223,11 +220,16 @@ class Play extends Phaser.Scene {
         //add the scrolling instruction screen but destroy it after a while
         this.instruct.x -= this.INST_SCROLL_SPEED;
         this.instruct2.x -= this.INST_SCROLL_SPEED;
+        if(this.instruct.x < -1200){
+            this.goText.alpha=1;
+        }
         if(this.instruct.x < -1300){
+            this.goText.alpha=0;
             this.instruct.destroy();
             this.instruct2.destroy();
             this.INST_SCROLL_SPEED=4;
         }
+        
 		// check if rat is grounded
 	    this.rat.isGrounded = this.rat.body.touching.down;
 
@@ -319,6 +321,10 @@ class Play extends Phaser.Scene {
                     score=0;
                     this.ratCollision();
                 }
+                this.rat.alpha=.2;
+                this.time.delayedCall(300, () => { 
+                    this.rat.alpha=1;
+                });
             }
             let anim = this.add.sprite(food.x, food.y, 'sparkle').setOrigin(1, .7);
             anim.anims.play('spark');
