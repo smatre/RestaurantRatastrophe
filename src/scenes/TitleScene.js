@@ -6,6 +6,7 @@ class TitleScene extends Phaser.Scene {
     preload() {
         this.load.image('titleScreen', 'assets/titleScreen.png');
         this.load.image('playButton', 'assets/playButton.png');
+        this.load.audio('snore', ['assets/menu_sound.mp3']);
 
     }
 
@@ -15,6 +16,15 @@ class TitleScene extends Phaser.Scene {
             game.config.height, 'titleScreen');
         img.scale = 1
         img.setOrigin(1,1);
+
+         // set up audio
+         this.snoreSound = this.sound.add('snore', { 
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: true 
+        });
+        this.snoreSound.play();
 
         //button play
         var playButton = this.add.image(game.config.width,
@@ -28,7 +38,8 @@ class TitleScene extends Phaser.Scene {
     }
 
     clickButton() {
-            this.scene.start('playScene');
+        this.snoreSound.destroy();
+        this.scene.start('playScene');
     }
 
 }

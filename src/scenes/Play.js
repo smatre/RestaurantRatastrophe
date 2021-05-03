@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         // set load path
         this.load.path = 'assets/';
         // load assets
+        this.load.audio('music', ['ratastrophe_music.mp3']);
         this.load.image('border','border.png');
         this.load.image('kitchen','kitchen.png');
         this.load.image('trap','newMouseTrap.png');
@@ -314,6 +315,7 @@ class Play extends Phaser.Scene {
         this.difficultyTimer.destroy();  
         this.rat.destroy();  
         this.sound.play('trap');
+        this.song.destroy();  
         //change scene to end game  
         this.scene.start('endScene');
     }

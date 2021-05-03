@@ -6,10 +6,18 @@ class EndScene extends Phaser.Scene {
         this.load.image('endScene', 'assets/endScene.png');
         this.load.image('restartButton', 'assets/restartButton.png');
         this.load.image('quitButton', 'assets/quitButton2.png');
-        this.load.image('endScreen', 'assets/endScreen.png')
+        this.load.image('endScreen', 'assets/endScreen.png');
+        this.load.audio('rip', ['assets/rip_music.mp3']);
     }
 
     create() {
+        this.deathSong = this.sound.add('rip', { 
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: false 
+        });
+        this.deathSong.play();
         //endScreen
         var end = this.add.image(game.config.width, 
             game.config.height, 'endScreen');
@@ -20,7 +28,7 @@ class EndScene extends Phaser.Scene {
             game.config.height, 'endScene');
         img.scale = 0.18
         img.setOrigin(1.5, 1.3);
-
+        
         //button restart
         var restartButton = this.add.image(game.config.width,
             game.config.height, 'restartButton');
@@ -74,6 +82,7 @@ class EndScene extends Phaser.Scene {
     update() {
         if (this.playAgain) {
             this.playAgain = false;
+            this.deathSong.destroy();
             this.scene.start('playScene');
         }
     }
