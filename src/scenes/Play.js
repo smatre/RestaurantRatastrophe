@@ -73,7 +73,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         // wait a few seconds before spawning traps
-        this.time.delayedCall(60000, () => { 
+        this.time.delayedCall(25000, () => { 
             this.addTrap(); 
         });
         
@@ -123,7 +123,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawning
-        this.time.delayedCall(30000, () => { 
+        this.time.delayedCall(60000, () => { 
             this.addApple(); 
         });
         // set up difficulty timer (triggers callback every second)
@@ -203,9 +203,13 @@ class Play extends Phaser.Scene {
     }
     //create cheese 🧀 group
     addCheese() {
-        let speedVariance =  Phaser.Math.Between(30, 40);
-        let cheese = new Cheese(this, this.trapSpeed - speedVariance);
-        this.cheeseGroup.add(cheese);
+        let speedVariance =  Phaser.Math.Between(10, 13);
+        this.time.delayedCall(30000, () => { 
+            console.log("adding cheese:");
+            let cheese = new Cheese(this, this.trapSpeed - speedVariance);
+            this.cheeseGroup.add(cheese);     
+        });
+        
     }
     // create new shelves and add them to existing group
     addShelf() {
@@ -313,6 +317,12 @@ class Play extends Phaser.Scene {
             else if(name=="cheese"){
                 this.MAX_JUMPS=2
                 this.rat.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
+                console.log("adding tint, got cheese");
+                this.time.delayedCall(15000, () => { 
+                    this.MAX_JUMPS=1;
+                    this.rat.clearTint(); 
+                    console.log("cleared tint");
+                });
             }
             else if(name=="apple"){
                 score -= 10;
