@@ -43,6 +43,14 @@ class Play extends Phaser.Scene {
         this.SCROLL_SPEED = 4;
         this.INST_SCROLL_SPEED = 2;
         this.physics.world.gravity.y = 2600;
+        // set up audio
+        this.song = this.sound.add('music', { 
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: true 
+        });
+        this.song.play();
 
         // add tile sprite
         this.bgKitchen = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'kitchen').setOrigin(0);
