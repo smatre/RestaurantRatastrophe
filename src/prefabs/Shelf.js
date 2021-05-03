@@ -7,11 +7,12 @@ class Shelf extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);       // add to physics system
         this.setVelocityX(velocity);            // make it go!
         this.setImmovable(); 
-       this.setCollideWorldBounds(false);                   
+        this.setCollideWorldBounds(false);                   
         this.body.allowGravity=false;
         this.body.checkCollision.down=false;
         this.body.checkCollision.left=false;
         this.body.checkCollision.right=false;
+        this.setPushable(false);
         this.newShelf = true;                 // custom property to control Trap spawning
     }
 

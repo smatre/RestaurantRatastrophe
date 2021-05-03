@@ -30,7 +30,7 @@ class Play extends Phaser.Scene {
     create() {
         this.delay = 10000;
         this.firstTrap = true;
-        this.trapSpeed = -200;
+        this.trapSpeed = -250;
         this.trapSpeedMax = -500;
         // variables and settings
         this.JUMP_VELOCITY = -1500;
@@ -73,7 +73,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         // wait a few seconds before spawning traps
-        this.time.delayedCall(25000, () => { 
+        this.time.delayedCall(15000, () => { 
             this.addTrap(); 
         });
         
@@ -91,7 +91,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawn
-        this.time.delayedCall(15000, () => { 
+        this.time.delayedCall(10000, () => { 
             this.addGrape(); 
         });
         //set up steak 🥩 group
@@ -99,7 +99,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawn
-        this.time.delayedCall(20000, () => { 
+        this.time.delayedCall(12000, () => { 
             this.addSteak(); 
         });
         //set up bread 🍞 group
@@ -107,7 +107,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawn
-        this.time.delayedCall(25000, () => { 
+        this.time.delayedCall(17000, () => { 
             this.addBread(); 
         });
         //set up cheese 🧀 group
@@ -115,7 +115,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawning
-        this.time.delayedCall(90000, () => { 
+        this.time.delayedCall(60000, () => { 
             this.addCheese(); 
         });
         //set up apple 🍎 group
@@ -123,7 +123,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawning
-        this.time.delayedCall(60000, () => { 
+        this.time.delayedCall(70000, () => { 
             this.addApple(); 
         });
         // set up difficulty timer (triggers callback every second)
@@ -175,31 +175,42 @@ class Play extends Phaser.Scene {
             let trap = new Trap(this, this.trapSpeed - speedVariance);
             this.trapGroup.add(trap);        
         });
-        this.delay -= 1000;  
+        if (this.delay >= 2500) {
+            this.delay -= 1000; 
+        }
+         
     }
     //create bread 🍞 group
     addBread() {
         let speedVariance =  Phaser.Math.Between(30, 33);
-        let bread = new Bread(this, this.trapSpeed - speedVariance);
-        this.breadGroup.add(bread);
+        this.time.delayedCall(2000, () => { 
+            let bread = new Bread(this, this.trapSpeed - speedVariance);
+            this.breadGroup.add(bread);
+        }); 
     }
     //create grape 🍇 group
     addGrape() {
         let speedVariance =  Phaser.Math.Between(25, 28);
-        let grape = new Grape(this, this.trapSpeed - speedVariance);
-        this.grapeGroup.add(grape);
+        this.time.delayedCall(7000, () => { 
+            let grape = new Grape(this, this.trapSpeed - speedVariance);
+            this.grapeGroup.add(grape);   
+        });   
     }
     //create steak 🥩 group
     addSteak() {
         let speedVariance =  Phaser.Math.Between(20, 23);
-        let steak = new Steak(this, this.trapSpeed - speedVariance);
-        this.steakGroup.add(steak);
+        this.time.delayedCall(3000, () => { 
+            let steak = new Steak(this, this.trapSpeed - speedVariance);
+            this.steakGroup.add(steak);  
+        });          
     }
     //create apple 🍎 group
     addApple() {
         let speedVariance =  Phaser.Math.Between(15, 18);
-        let apple = new Apple(this, this.trapSpeed - speedVariance);
-        this.appleGroup.add(apple);
+        this.time.delayedCall(8000, () => { 
+            let apple = new Apple(this, this.trapSpeed - speedVariance);
+            this.appleGroup.add(apple); 
+        }); 
     }
     //create cheese 🧀 group
     addCheese() {
@@ -268,8 +279,7 @@ class Play extends Phaser.Scene {
 
         //check trap destruction
         this.trapGroup.getChildren().forEach(trap => {
-            console.log(trap.body.x);
-            if (trap.body.x < 20) {
+            if (trap.body.x > 0 && trap.body.x < 15) {
                 trap.destroy();
                 score += 5;
                 this.scoreText.text = "score: " + score;
@@ -336,11 +346,14 @@ class Play extends Phaser.Scene {
                     this.rat.alpha=1;
                 });
             }
-            let anim = this.add.sprite(food.x, food.y, 'sparkle').setOrigin(1, .7);
-            anim.anims.play('spark');
-            anim.on('animationcomplete', () => {
-                anim.destroy();
-            });
+            if (name != "apple") {
+                let anim = this.add.sprite(food.x, food.y, 'sparkle').setOrigin(1, .7);
+                anim.anims.play('spark');
+                anim.on('animationcomplete', () => {
+                    anim.destroy();
+                });
+            }
+            
             food.destroy();
             this.scoreText.text = "score: " + score;
         }

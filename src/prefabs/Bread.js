@@ -7,6 +7,7 @@ class Bread extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);       // add to physics system
         this.setVelocityX(velocity);            // make it go!
         this.setCollideWorldBounds(false); 
+        this.setPushable(false);
         this.body.allowGravity=false;
         this.body.checkCollision.down=true; 
         this.body.checkCollision.left=true; 

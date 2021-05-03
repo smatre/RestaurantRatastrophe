@@ -8,6 +8,7 @@ class Grape extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(velocity);            // make it go!
         this.setCollideWorldBounds(false); 
         this.body.allowGravity=false;
+        this.setPushable(false);
         this.body.checkCollision.down=true; 
         this.body.checkCollision.left=true; 
         this.body.checkCollision.right=true; 
