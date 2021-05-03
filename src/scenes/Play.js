@@ -25,6 +25,9 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('sparkle', 'sparkle.png', {
             frameWidth: 100, frameHeight: 100, startFrame: 0, endFrame: 5
         });
+        this.load.audio('jump', 'Jump.wav');
+        this.load.audio('eat', 'eat.wav');
+        this.load.audio('trap', 'trap.wav');
     }
 
     create() {
@@ -264,6 +267,10 @@ class Play extends Phaser.Scene {
 	        this.jumping = true;
             this.run = false;
 	    } 
+        //add a sound effect when the rat jumps
+        if(Phaser.Input.Keyboard.JustDown(cursors.up) && this.jumps>0){
+            this.sound.play('jump');
+        }
         // finally, letting go of the UP key subtracts a jump
         // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.UpDuration__anchor
 	    if(this.jumping && Phaser.Input.Keyboard.UpDuration(cursors.up)) {
@@ -306,6 +313,7 @@ class Play extends Phaser.Scene {
         this.rat.destroyed = true;                    // turn off collision checking
         this.difficultyTimer.destroy();  
         this.rat.destroy();  
+        this.sound.play('trap');
         //change scene to end game  
         this.scene.start('endScene');
     }
@@ -315,14 +323,17 @@ class Play extends Phaser.Scene {
             if(name=="steak"){
                 score += 5;
                 console.log("steak");
+                this.sound.play('eat');
             }
             else if (name=="grape"){
                 score += 3;
                 console.log("grape");
+                this.sound.play('eat');
             }
             else if(name== "bread"){
                 score += 1;
                 console.log("break");
+                this.sound.play('eat');
             }
             else if(name=="cheese"){
                 this.MAX_JUMPS=2
