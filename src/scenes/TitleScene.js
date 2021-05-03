@@ -7,7 +7,7 @@ class TitleScene extends Phaser.Scene {
         this.load.image('titleScreen', 'assets/titleScreen.png');
         this.load.image('playButton', 'assets/playButton.png');
         this.load.audio('snore', ['assets/menu_sound.mp3']);
-
+        this.load.audio('button', './assets/button.wav');
     }
 
     create() {
@@ -34,6 +34,7 @@ class TitleScene extends Phaser.Scene {
         playButton.setInteractive();
         playButton.on('pointerdown', () => { 
             this.clickButton();
+            this.sound.play('button');
         });
     }
 
