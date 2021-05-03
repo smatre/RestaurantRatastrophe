@@ -6,6 +6,9 @@ class Play extends Phaser.Scene {
     preload() {
         // set load path
         this.load.path = 'assets/';
+        //load sound
+        this.load.audio('cheese', 'cheese.wav');
+        this.load.audio('apple', 'bad_food.wav');
         // load assets
         this.load.audio('music', ['ratastrophe_music.mp3']);
         this.load.image('border','border.png');
@@ -32,8 +35,11 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //sounds
+        this.cheese = this.sound.add('cheese');
+        this.apple = this.sound.add('apple');
+
         this.delay = 10000;
-        this.firstTrap = true;
         this.trapSpeed = -250;
         this.trapSpeedMax = -500;
         // variables and settings
@@ -127,7 +133,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         //wait before spawning
-        this.time.delayedCall(60000, () => { 
+        this.time.delayedCall(15000, () => { 
             this.addCheese(); 
         });
         //set up apple 🍎 group
@@ -342,10 +348,11 @@ class Play extends Phaser.Scene {
             }
             else if(name== "bread"){
                 score += 1;
-                console.log("break");
+                console.log("bread");
                 this.sound.play('eat');
             }
             else if(name=="cheese"){
+                this.cheese.play();
                 this.MAX_JUMPS=2
                 this.rat.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
                 console.log("adding tint, got cheese");
@@ -356,6 +363,7 @@ class Play extends Phaser.Scene {
                 });
             }
             else if(name=="apple"){
+                this.apple.play();
                 score -= 10;
                 console.log("break");
                 if(score<0){
