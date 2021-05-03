@@ -1,7 +1,7 @@
 class Trap extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, velocity) {
         // call Phaser Physics Sprite constructor
-        super(scene, game.config.width - 20, game.config.height - paddleHeight/2, 'trap'); 
+        super(scene, game.config.width - 50, game.config.height - 40, 'trap'); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add to physics system

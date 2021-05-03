@@ -33,7 +33,7 @@ class Play extends Phaser.Scene {
         this.trapSpeed = -200;
         this.trapSpeedMax = -500;
         // variables and settings
-        this.JUMP_VELOCITY = -1000;
+        this.JUMP_VELOCITY = -1500;
         //change MAX_JUMPS  to two once we implement magic cheese
         this.MAX_JUMPS = 1;
         this.SCROLL_SPEED = 4;
@@ -70,7 +70,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         // wait a few seconds before spawning traps
-        this.time.delayedCall(2000, () => { 
+        this.time.delayedCall(60000, () => { 
             this.addTrap(); 
         });
         
@@ -237,7 +237,7 @@ class Play extends Phaser.Scene {
         this.rat.anims.play('run', this.run);
         // allow steady velocity change up to a certain key down duration
         // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.DownDuration__anchor
-	    if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(cursors.up, 150)) {
+	    if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(cursors.up, 250)) {
 	        this.rat.body.velocity.y = this.JUMP_VELOCITY;
 	        this.jumping = true;
             this.run = false;
@@ -257,7 +257,8 @@ class Play extends Phaser.Scene {
 
         //check trap destruction
         this.trapGroup.getChildren().forEach(trap => {
-            if (trap.body.x < 25) {
+            console.log(trap.body.x);
+            if (trap.body.x < 20) {
                 trap.destroy();
                 score += 5;
                 this.scoreText.text = "score: " + score;
@@ -322,6 +323,5 @@ class Play extends Phaser.Scene {
             this.scoreText.text = "score: " + score;
         }
     }
-
 
 }
