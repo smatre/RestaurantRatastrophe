@@ -29,23 +29,24 @@ class EndScene extends Phaser.Scene {
         img.scale = 0.18
         img.setOrigin(1.5, 1.3);
         
-        //button restart
-        var restartButton = this.add.image(game.config.width,
-            game.config.height, 'restartButton');
-        restartButton.scale = 0.18
-        restartButton.setOrigin(3.1, 1.5);
-        restartButton.setInteractive();
-        restartButton.on('pointerdown', function (pointer) {
-            this.playAgain = true;
-        }, this);
+       //button restart
+       var restartButton = this.add.image(game.config.width,
+        game.config.height, 'restartButton');
+    restartButton.scale = 0.18
+    restartButton.setOrigin(3.1, 1.5);
+    restartButton.setInteractive();
+    restartButton.on('pointerdown', function (pointer) {
+        cont = true;
+    }, this);
 
-        //button quit
-        var quitButton = this.add.image(game.config.width,
+         //button quit
+         var quitButton = this.add.image(game.config.width,
             game.config.height, 'quitButton');
         quitButton.scale = 0.18
         quitButton.setOrigin(1.1, 1.5);
+        quitButton.setInteractive();
         quitButton.on('pointerdown', function (pointer) {
-            this.playAgain = false;
+            quit=true;
         }, this);
 
         //check for high score in local storage
@@ -80,10 +81,15 @@ class EndScene extends Phaser.Scene {
 
 
     update() {
-        if (this.playAgain) {
-            this.playAgain = false;
+        if (cont==true) {
+            cont=false;
             this.deathSong.destroy();
             this.scene.start('playScene');
+        }
+        else if(quit==true){
+            quit=false;
+            this.deathSong.destroy();
+            this.scene.start('titleScene');
         }
     }
 }

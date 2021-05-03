@@ -195,6 +195,7 @@ class Play extends Phaser.Scene {
         });
         if (this.delay >= 2500) {
             this.delay -= 1000; 
+            this.song.rate += 0.01; 
         }
          
     }

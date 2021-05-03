@@ -43,5 +43,8 @@ const paddleHeight = 128;
 const paddleVelocity = 150;
 let score;
 let highScore;
+let cont=false;
+let quit=false
+let playNow=false;
 let newHighScore = false;
 
