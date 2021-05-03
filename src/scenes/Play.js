@@ -37,6 +37,7 @@ class Play extends Phaser.Scene {
         //change MAX_JUMPS  to two once we implement magic cheese
         this.MAX_JUMPS = 1;
         this.SCROLL_SPEED = 4;
+        this.INST_SCROLL_SPEED = 2;
         this.physics.world.gravity.y = 2600;
 
         // add tile sprite
@@ -56,13 +57,14 @@ class Play extends Phaser.Scene {
             
         }
 
-        // set up rat
+        // set up rat 🐀
         this.rat = this.physics.add.sprite(120, game.config.height/2-tileSize, 'rat').setOrigin(SCALE);
         this.rat.setCollideWorldBounds(true);
         this.rat.setBounce(0.5);
         this.rat.setMaxVelocity(0, 600);
         this.rat.setDragY(200);
         this.rat.setDepth(1);
+        this.rat.setPushable(false);
         this.rat.destroyed = false;       // custom property to track this.rat life
 
        // set up trap group
@@ -150,14 +152,16 @@ class Play extends Phaser.Scene {
             frameRate: 12
         });
         //add border
-        this.border=this.physics.add.sprite(75, game.config.height/2, 'border').setOrigin(SCALE);
+        this.border=this.physics.add.sprite(40, game.config.height/2, 'border').setOrigin(SCALE);
         this.border.setVisible(false);
         this.border.setImmovable(true);
         this.border.body.allowGravity=false;
         this.border.body.checkCollision.left=true;
         this.border.body.checkCollision.right=true;
+       // this.border.setCollideWorldBounds(true);
 
         this.physics.add.collider(this.rat, this.ground);
+        this.physics.add.collider(this.border, this.ground);
         this.physics.add.collider(this.trapGroup, this.ground);
         this.physics.add.collider(this.rat, this.shelfGroup);
         this.physics.add.collider(this.rat, this.border);
@@ -215,13 +219,14 @@ class Play extends Phaser.Scene {
 
     update() {
         // update tile sprites (tweak for more "speed")
-        this.bgKitchen.tilePositionX += this.SCROLL_SPEED;
+        this.bgKitchen.tilePositionX += this.INST_SCROLL_SPEED;
         //add the scrolling instruction screen but destroy it after a while
-        this.instruct.x -= this.SCROLL_SPEED;
-        this.instruct2.x -= this.SCROLL_SPEED;
-        if(this.instruct.x < -2000){
+        this.instruct.x -= this.INST_SCROLL_SPEED;
+        this.instruct2.x -= this.INST_SCROLL_SPEED;
+        if(this.instruct.x < -1300){
             this.instruct.destroy();
             this.instruct2.destroy();
+            this.INST_SCROLL_SPEED=4;
         }
 		// check if rat is grounded
 	    this.rat.isGrounded = this.rat.body.touching.down;
@@ -305,6 +310,7 @@ class Play extends Phaser.Scene {
             }
             else if(name=="cheese"){
                 this.MAX_JUMPS=2
+                this.rat.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
             }
             else if(name=="apple"){
                 score -= 10;

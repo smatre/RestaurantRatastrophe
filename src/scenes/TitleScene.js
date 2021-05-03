@@ -20,7 +20,7 @@ class TitleScene extends Phaser.Scene {
         var playButton = this.add.image(game.config.width,
             game.config.height, 'playButton');
         playButton.scale = 0.5
-        playButton.setOrigin(1.9, 5);
+        playButton.setOrigin(2, 7);
         playButton.setInteractive();
         playButton.on('pointerdown', () => { 
             this.clickButton();
