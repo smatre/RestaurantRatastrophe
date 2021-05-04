@@ -1,3 +1,10 @@
+// Restaurant Ratastrophe
+// By:
+// Sonia Atre 
+// Brian Zhang 
+// Fernanda Becerra
+// Date Completed: 5/3/2021
+// Creative Tilt Justification:
 // technically interesting: 
 // 1. added increasing difficulty of mouse trap. 
 // We decremented the delay each time so the mouse traps get 
