@@ -23,9 +23,10 @@ class Play extends Phaser.Scene {
         this.load.image('shelf','marbleShelf.png');
         this.load.image('instruction', 'instructionScreen.png');
         this.load.image('instruction2', 'instructionScreen2.png');
-        this.load.spritesheet('rat', 'ratSpritesSmall.png', {
-            frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
-        });
+        this.load.atlas('rat_atlas', 'ratSheet.png', 'ratSprites.json');
+        // this.load.spritesheet('rat', 'ratSpritesSmall.png', {
+        //     frameWidth: 80, frameHeight: 50, startFrame: 0, endFrame: 6
+        // });
         this.load.spritesheet('sparkle', 'sparkle.png', {
             frameWidth: 100, frameHeight: 100, startFrame: 0, endFrame: 5
         });
@@ -77,7 +78,7 @@ class Play extends Phaser.Scene {
         }
 
         // set up rat 🐀
-        this.rat = this.physics.add.sprite(120, game.config.height/2-tileSize, 'rat').setOrigin(SCALE);
+        this.rat = this.physics.add.sprite(120, game.config.height/2-tileSize, 'rat_atlas','run2').setOrigin(SCALE);
         this.rat.setCollideWorldBounds(true);
         this.rat.setBounce(0.5);
         this.rat.setMaxVelocity(0, 600);
@@ -158,10 +159,28 @@ class Play extends Phaser.Scene {
         
 
         //add rat run animation
-        this.anims.create({
-            key: 'run',
-            frames: this.anims.generateFrameNumbers('rat', { start: 0, end: 6, first: 0}),
-            frameRate: 12
+        this.anims.create({ 
+            key: 'run', 
+            frames: this.anims.generateFrameNames('rat_atlas', {      
+                prefix: 'run',
+                start: 1,
+                end: 6,
+                suffix: ''
+            }), 
+            frameRate: 30,
+            repeat: -1 
+        });
+
+        this.anims.create({ 
+            key: 'jump', 
+            frames: this.anims.generateFrameNames('rat_atlas', {      
+                prefix: 'jump',
+                start: 1,
+                end: 3,
+                suffix: ''
+            }), 
+            frameRate: 30,
+            repeat: -1 
         });
 
         this.anims.create({
