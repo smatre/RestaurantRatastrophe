@@ -13,7 +13,7 @@ class EndScene extends Phaser.Scene {
     create() {
         this.deathSong = this.sound.add('rip', { 
             mute: false,
-            volume: 1,
+            volume: 0.2,
             rate: 1,
             loop: false 
         });

@@ -1,3 +1,17 @@
+// technically interesting: 
+// 1. added increasing difficulty of mouse trap. 
+// We decremented the delay each time so the mouse traps get 
+// closer and closer every scene (minimum delay: 1.5 seconds)
+// 2. added a tint on the rat for power-up (eating the cheese), and 
+// set a timer for the tint to last 30 seconds (same duration as the powerup)
+
+//visually style: 1. We are very proud of our music, 
+// the sound effects and music fit really well with our happy and playful
+// theme. We also had no prior experience with sound, 
+// so we believe we did really well despite that
+//2. We are very proud of our artwork. It fits in really well with our theme,
+// and the cartoonish look was exactly what we were going for
+
 //global 
 let cursors;
 const SCALE = .5;
@@ -15,7 +29,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: false,
             gravity: {
                 x: 0,
                 y: 0
