@@ -164,10 +164,10 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNames('rat_atlas', {      
                 prefix: 'run',
                 start: 1,
-                end: 6,
+                end: 7,
                 suffix: ''
             }), 
-            frameRate: 30,
+            frameRate: 12,
             repeat: -1 
         });
 
@@ -179,7 +179,7 @@ class Play extends Phaser.Scene {
                 end: 3,
                 suffix: ''
             }), 
-            frameRate: 30,
+            frameRate: 12,
             repeat: -1 
         });
 
