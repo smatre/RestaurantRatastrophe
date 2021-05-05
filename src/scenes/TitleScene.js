@@ -20,7 +20,7 @@ class TitleScene extends Phaser.Scene {
          // set up audio
          this.snoreSound = this.sound.add('snore', { 
             mute: false,
-            volume: 1,
+            volume: .5,
             rate: 1,
             loop: true 
         });
