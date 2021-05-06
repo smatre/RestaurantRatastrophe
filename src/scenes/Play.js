@@ -39,7 +39,7 @@ class Play extends Phaser.Scene {
         //sounds
         this.cheese = this.sound.add('cheese');
         this.apple = this.sound.add('apple');
-
+        this.disable = false;
         this.delay = 10000;
         this.trapSpeed = -250;
         this.trapSpeedMax = -500;
@@ -203,7 +203,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.rat, this.ground);
         this.physics.add.collider(this.border, this.ground);
         this.physics.add.collider(this.trapGroup, this.ground);
-        this.physics.add.collider(this.rat, this.shelfGroup);
+        this.shelfCollider = this.physics.add.collider(this.rat, this.shelfGroup);
         this.physics.add.collider(this.rat, this.border);
     }
     // create new traps and add them to existing trap group
@@ -295,6 +295,20 @@ class Play extends Phaser.Scene {
             this.jumps = this.MAX_JUMPS;
             this.jumping = false;
             this.run = true;
+        }
+
+        if (Phaser.Input.Keyboard.DownDuration(cursors.down)) {
+            console.log("disabling");
+            this.shelfCollider.active = false;
+            this.disable = true;
+        }
+
+        else if (!Phaser.Input.Keyboard.DownDuration(cursors.down) && this.disable) {
+            console.log("turning back on");
+            this.time.delayedCall(1000, () => {
+                this.shelfCollider.active = true;
+            });
+            this.disable = false;
         }
 
         this.rat.anims.play('run', this.run);
