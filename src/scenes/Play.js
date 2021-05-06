@@ -21,7 +21,7 @@ class Play extends Phaser.Scene {
         this.load.image('cheese', 'golden cheese.png');
         this.load.image('apple', 'badApple.png');
         this.load.image('shelf', 'marbleShelf.png');
-        this.load.image('instruction', 'instructionScreen.png');
+        this.load.image('instruction', 'instruction1.png');
         this.load.image('instruction2', 'instructionScreen2.png');
         this.load.atlas('rat_atlas', 'ratSheet.png', 'ratSprites.json');
         // this.load.spritesheet('rat', 'ratSpritesSmall.png', {
