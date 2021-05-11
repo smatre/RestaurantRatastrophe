@@ -62,7 +62,7 @@ class Play extends Phaser.Scene {
             rate: 1,
             loop: true
         });
-        this.song.play();
+        //this.song.play();
 
         // add tile sprite
         this.bgKitchen = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'kitchen').setOrigin(0);
