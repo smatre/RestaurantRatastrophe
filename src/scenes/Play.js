@@ -9,8 +9,12 @@ class Play extends Phaser.Scene {
         //load sound
         this.load.audio('cheese', 'cheese.wav');
         this.load.audio('apple', 'bad_food.wav');
-        // load assets
+        this.load.audio('jump', 'Jump.wav');
+        this.load.audio('eat', 'eat.wav');
+        this.load.audio('trap', 'trap.wav');
         this.load.audio('music', ['ratastrophe_music.mp3']);
+
+        // load assets
         this.load.image('border', 'border.png');
         this.load.image('kitchen', 'kitchen.png');
         this.load.image('trap', 'newMouseTrap.png');
@@ -30,15 +34,16 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('sparkle', 'sparkle.png', {
             frameWidth: 100, frameHeight: 100, startFrame: 0, endFrame: 5
         });
-        this.load.audio('jump', 'Jump.wav');
-        this.load.audio('eat', 'eat.wav');
-        this.load.audio('trap', 'trap.wav');
     }
 
     create() {
         //sounds
         this.cheese = this.sound.add('cheese');
         this.apple = this.sound.add('apple');
+        this.jump = this.sound.add('jump');
+        this.eat = this.sound.add('eat');
+        this.trap = this.sound.add('trap');
+
         this.disable = false;
         this.delay = 10000;
         this.trapSpeed = -250;
@@ -321,7 +326,7 @@ class Play extends Phaser.Scene {
         }
         //add a sound effect when the rat jumps
         if (Phaser.Input.Keyboard.JustDown(cursors.up) && this.jumps > 0) {
-            this.sound.play('jump');
+            this.jump.play();
         }
         // finally, letting go of the UP key subtracts a jump
         // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.UpDuration__anchor
@@ -410,7 +415,7 @@ class Play extends Phaser.Scene {
         this.rat.destroyed = true;                    // turn off collision checking
         this.difficultyTimer.destroy();
         this.rat.destroy();
-        this.sound.play('trap');
+        this.trap.play();
         this.song.destroy();
         //change scene to end game  
         this.scene.start('endScene');
@@ -420,17 +425,17 @@ class Play extends Phaser.Scene {
         if (name === "steak") {
             score += 5;
             console.log("steak");
-            this.sound.play('eat');
+            this.eat.play();
         }
         else if (name === "grape") {
             score += 3;
             console.log("grape");
-            this.sound.play('eat');
+            this.eat.play();
         }
         else if (name === "bread") {
             score += 1;
             console.log("bread");
-            this.sound.play('eat');
+            this.eat.play();
         }
         else if (name === "cheese") {
             this.cheese.play();
